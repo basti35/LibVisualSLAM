@@ -40,7 +40,7 @@ void AVIReader::readCurFrameRGB(unsigned char* imgdata) {
 void AVIReader::readCurFrameGray(unsigned char* grayImgData) {
 	assert(videoCap);
 	IplImage* img = cvRetrieveFrame(videoCap);
-	cv::Mat rawFrame(img);
+	cv::Mat rawFrame = cv::cvarrToMat(img);
 	cv::Mat videoFrame(_h, _w, CV_8UC1, grayImgData);
 	if(rawFrame.type() == CV_8UC1)
 		rawFrame.copyTo(videoFrame);
@@ -51,7 +51,7 @@ void AVIReader::readCurFrame(unsigned char* rgbdata,
 		unsigned char* graydata) {
 	assert(videoCap);
 	IplImage* img = cvRetrieveFrame(videoCap);
-	cv::Mat rawFrame(img);
+	cv::Mat rawFrame = cv::cvarrToMat(img);
 
 	cv::Mat rgbImg(_h, _w, CV_8UC3, rgbdata);
 	cv::cvtColor(rawFrame, rgbImg, CV_BGR2RGB);

@@ -10,8 +10,10 @@
 #include "geometry/SL_FundamentalMatrix.h"
 #include <cmath>
 #include <cfloat>
+#include "opencv2/xfeatures2d.hpp"
 #if CV_MINOR_VERSION > 3
 #include "opencv2/nonfree/features2d.hpp"
+#include "opencv2/nonfree.hpp"
 #endif
 
 float computeSurfDescDist(const float* desc0, const float* desc1, int dimDesc) {
@@ -143,9 +145,9 @@ int detectSURFPoints(const ImgG& img, Mat_d& surfPts,
 		std::vector<float>& surfDesc, double hessianThreshold) {
 
 	KpVec surfPtsVec;
-	cv::SURF surf(hessianThreshold, 4, 2, false);
+  cv::Ptr<cv::xfeatures2d::SURF> surf = cv::xfeatures2d::SURF::create(hessianThreshold, 4, 2, false);
 	cv::Mat cvImg(img.rows, img.cols, CV_8UC1, img.data);
-	surf(cvImg, cv::Mat(), surfPtsVec, surfDesc);
+	surf->detectAndCompute(cvImg, cv::Mat(), surfPtsVec, surfDesc);
 	KpVec2Mat(surfPtsVec, surfPts);
-	return surf.descriptorSize();
+	return surf->descriptorSize();
 }

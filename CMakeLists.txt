@@ -12,6 +12,9 @@ aux_source_directory(src/extern SRC_EXTERN)
 aux_source_directory(src/extern/sba-1.6 SRC_SBA)
 aux_source_directory(src/extern/csparse SRC_CSPARSE)
 
+set(OpenCV_DIR /opt/ros/kinetic/share/OpenCV-3.1.0-dev)
+find_package(OpenCV REQUIRED)
+
 FILE(GLOB SRC_LEVMAR "src/extern/levmar/*.[hc]")
 FILE(GLOB levmar_cores "src/extern/levmar/*_core.c")
 list(REMOVE_ITEM SRC_LEVMAR ${levmar_cores})
@@ -25,7 +28,7 @@ aux_source_directory(src/tools SRC_TOOLS)
 aux_source_directory(src/util SRC_UTIL)
 
 
-include_directories(src)
+include_directories(src ${OpenCV_INCLUDE_DIRS})
 
 add_library(VisualSLAM ${SRC} ${SRC_CALIBRATION} ${SRC_EXTERN} ${SRC_SBA} ${SRC_CSPARSE} ${SRC_LEVMAR} ${SRC_GEOMETRY} ${SRC_IMGPROC} ${SRC_LAP} ${SRC_MATCHING} ${SRC_MATH} ${SRC_TOOLS} ${SRC_UTIL})
 
